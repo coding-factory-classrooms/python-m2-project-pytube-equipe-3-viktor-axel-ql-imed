@@ -5,32 +5,36 @@
 To install dependencies, open a terminal and run :
 
 ```
-python3 -m pip install -r requirement.txt
+    python3 -m pip install -r requirement.txt
 ```
-
 
 To start the project :
 
 ```
-python3 manage.py runserver 8000
+    python3 manage.py runserver 8000
 ```
-
 
 To make migrations :
 
 ```
-python3 manage.py makemigrations
+    python3 manage.py makemigrations
+```
+
+To create a superuser :
+
+```
+    python3 manage.py createsuperuser
 ```
 
 To apply migrations :
 
 ```
-python3 manage.py migrate
+    python3 manage.py migrate
 ```
 
 ## 🚀 Deployment
 
-To deploy the app, merge all the code to main branch, from terminal type the following command : 
+To deploy the app, merge all the code to main branch, from terminal type the following command :
 
 ```
     git push heroku main && heroku run python manage.py migrate
