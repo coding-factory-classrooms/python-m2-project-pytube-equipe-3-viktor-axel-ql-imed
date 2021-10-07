@@ -43,7 +43,9 @@ To deploy the app, merge all the code to main branch, from terminal type the fol
     git push heroku main && heroku run python manage.py migrate
 ```
 
-Your local user will not work by default in production as the same databse that you have locally is not running, to create a production super admin you can type the following command : 
+Your local user will not work by default in production as the same databse that you have locally is not running.
+
+To create a production super admin you can type the following command : 
 
 ```
     heroku run python manage.py createsuperuser
