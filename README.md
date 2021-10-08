@@ -5,8 +5,8 @@
 To install the required packages, open a terminal with virtual environment activated and type the following commands:
 
 ```
-    python3 -m pip install -r requirements.txt          # To install dependencies
-    python3 manage.py runserver 8000                    # Start the project at http://127.0.0.1:8000
+    python3 -m pip install -r requirements.txt      # To install dependencies
+    python3 manage.py runserver 8000                # Start the project at http://127.0.0.1:8000
 ```
 
 
