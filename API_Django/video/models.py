@@ -1,5 +1,8 @@
 from django.db import models
 
+from . import video_metadata
+from .validators import validate_file_extension
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
@@ -11,7 +14,7 @@ class Tag(models.Model):
 class Video(models.Model):
     title = models.CharField(max_length=50)
     duration = models.IntegerField()
-    file = models.FileField(blank=False)
+    file = models.FileField(blank=False, upload_to='VideoMP4', validators=[validate_file_extension])
     thumbnail = models.ImageField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -29,6 +32,16 @@ class Video(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        # Code très difficile à tester
+        # Il faut mocker beaucoup trop de choses
+        # pour juste vérifier que le modèle est correctement mis à jour
+        if not self.pk and self.file:
+            metadata = video_metadata.extract_metadata(self.file.path)
+            if metadata:
+                self.duration = metadata.duration
+        super().save(*args, **kwargs)
 
 
 class Message(models.Model):
