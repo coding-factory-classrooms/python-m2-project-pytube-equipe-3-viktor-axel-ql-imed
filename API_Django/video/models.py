@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 from . import video_metadata
@@ -17,15 +18,16 @@ class Video(models.Model):
     file = models.FileField(blank=False, upload_to='VideoMP4', validators=[validate_file_extension])
     thumbnail = models.ImageField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     STATUS_DRAFT = 'draft'
     STATUS_PUBLISHED = 'published'
     STATUS_PRIVATE = 'private'
     STATUS_UNLISTED = 'unlisted'
     STATUS_CHOICES = [
-        (STATUS_DRAFT, 'Brouillon'),          # Tuple
-        (STATUS_PUBLISHED, 'Publié'),         # Tuple
-        (STATUS_PRIVATE, 'Privé'),            # Tuple
+        (STATUS_DRAFT, 'Brouillon'),  # Tuple
+        (STATUS_PUBLISHED, 'Publié'),  # Tuple
+        (STATUS_PRIVATE, 'Privé'),  # Tuple
         (STATUS_UNLISTED, 'Non repertorié'),  # Tuple
     ]
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default=STATUS_DRAFT)
@@ -48,6 +50,7 @@ class Message(models.Model):
     text = models.CharField(max_length=100)
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
     posted = models.DateTimeField(auto_now_add=True)
+
     # transmitter
 
     def __str__(self):
@@ -57,3 +60,13 @@ class Message(models.Model):
 class Video_tag(models.Model):
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+
+
+class TestTask(models.Model):
+
+    class Meta:
+        # ces permissions là sont add que si leur identifiant n'existe pas déjà
+        permissions = [
+            ("test_change_task_status", "test aarara  Can change the status of tasks"),
+            ("test_close_task", "Test Can removeaaaaaaa a task by setting its status as closed"),
+        ]
