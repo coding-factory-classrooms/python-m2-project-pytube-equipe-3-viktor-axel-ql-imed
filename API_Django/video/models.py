@@ -41,7 +41,7 @@ class Video(models.Model):
         # Il faut mocker beaucoup trop de choses
         # pour juste vérifier que le modèle est correctement mis à jour
         if not self.pk and self.file:
-            metadata = video_metadata.extract_metadata(self.file.path)
+            metadata = video_metadata.extract_metadata(self.file.name)
             if metadata:
                 self.duration = metadata.duration
         super().save(*args, **kwargs)
