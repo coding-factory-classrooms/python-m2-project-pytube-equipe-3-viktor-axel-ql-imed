@@ -8,7 +8,7 @@ Project is available on this <a href="https://pytube-backend.herokuapp.com/admin
 To install dependencies, open a terminal and run :
 
 ```
-    python3 -m pip install -r requirement.txt
+    python3 -m pip install -r requirements.txt
 ```
 
 To start the project :
@@ -38,7 +38,7 @@ To apply migrations :
 To generate the required package install file:
 
 ````
-    pip freeze > requirement.txt
+    pip freeze > requirements.txt
 ```
 ## 🚀 Deployment
 
