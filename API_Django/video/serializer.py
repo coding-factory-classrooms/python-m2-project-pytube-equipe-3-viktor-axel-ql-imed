@@ -21,6 +21,11 @@ class VideoSerializer(serializers.ModelSerializer):
         model = Video
         fields = '__all__'
 
+    def update(self, instance):
+        instance.count_view += 1
+        instance.save()
+        return instance
+
 
 class Video_tagSerializer(serializers.ModelSerializer):
     video_title = serializers.ReadOnlyField(source='video.title')
@@ -29,3 +34,4 @@ class Video_tagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video_tag
         fields = ['id', 'video_title', 'tag_name']
+

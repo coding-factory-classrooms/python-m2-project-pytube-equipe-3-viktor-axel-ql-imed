@@ -18,7 +18,8 @@ class Video(models.Model):
     file = models.FileField(blank=False, upload_to='VideoMP4', validators=[validate_file_extension])
     thumbnail = models.ImageField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    count_view = models.IntegerField(default=0)
+    # creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     STATUS_DRAFT = 'draft'
     STATUS_PUBLISHED = 'published'
@@ -44,6 +45,7 @@ class Video(models.Model):
             if metadata:
                 self.duration = metadata.duration
         super().save(*args, **kwargs)
+
 
 
 class Message(models.Model):
