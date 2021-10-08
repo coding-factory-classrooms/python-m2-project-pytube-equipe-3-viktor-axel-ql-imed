@@ -1,8 +1,30 @@
 # python-m2-project-pytube-equipe-3-viktor-axel-ql-imed
 
+##  🧰 Project Setup
+
+To install the required packages, open a terminal with virtual environment activated and type the following commands:
+
+```
+    python3 -m pip install -r requirements.txt          # To install dependencies
+    python3 manage.py runserver 8000                    # Start the project at http://127.0.0.1:8000
+```
+
+
+
+## 🕵️ Environment Variables
+
+You need to have a ```.env``` file containing all the keys and values needed.
+
+You can refer to the ```.env.default``` file located at ```./API_Django/.env.default```. 
+
+Create a file named ```.env``` and copy-paste the keys form the ```.env.default``` file, the values should have been given to you
+
+
+
 ## 📝 Notes
 
 Project is available on this <a href="https://pytube-backend.herokuapp.com/admin/login/?next=/admin/" target="_blank">link</a>
+
 
 To install dependencies, open a terminal and run :
 
