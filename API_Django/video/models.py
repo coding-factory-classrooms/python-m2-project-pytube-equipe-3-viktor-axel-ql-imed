@@ -18,7 +18,6 @@ class Video(models.Model):
     file = models.FileField(blank=False, upload_to='VideoMP4', validators=[validate_file_extension])
     thumbnail = models.ImageField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     STATUS_DRAFT = 'draft'
     STATUS_PUBLISHED = 'published'
@@ -67,6 +66,6 @@ class TestTask(models.Model):
     class Meta:
         # ces permissions là sont add que si leur identifiant n'existe pas déjà
         permissions = [
-            ("test_change_task_status", "test aarara  Can change the status of tasks"),
-            ("test_close_task", "Test Can removeaaaaaaa a task by setting its status as closed"),
+            ("test_1-2", "test 1 2"),
+            ("test_3_4", "Test 3 4"),
         ]
