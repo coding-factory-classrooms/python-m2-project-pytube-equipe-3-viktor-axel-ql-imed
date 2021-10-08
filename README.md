@@ -35,6 +35,11 @@ To apply migrations :
     python3 manage.py migrate
 ```
 
+To generate the required package install file:
+
+````
+    pip freeze > requirement.txt
+```
 ## 🚀 Deployment
 
 To deploy the app, merge all the code to main branch, from terminal type the following command :
@@ -50,3 +55,5 @@ To create a production super admin you can type the following command :
 ```
     heroku run python manage.py createsuperuser
 ```
+
+
