@@ -19,15 +19,11 @@ class VideoViewSet(viewsets.ModelViewSet):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
 
-    def update(self, request, *args, **kwargs):
+    def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.count_view = request.data.get("count_view")
+        instance.count_view += 1
         instance.save()
-
         serializer = self.get_serializer(instance)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
         return Response(serializer.data)
 
 
@@ -36,7 +32,3 @@ class Video_tagViewSet(viewsets.ModelViewSet):
     serializer_class = Video_tagSerializer
     lookup_field = 'tag'
 
-
-class UpdateVideoViewViewSet(viewsets.ModelViewSet):
-    queryset = Video.objects.all()
-    serializer_class = VideoSerializer

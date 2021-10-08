@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from video.viewset import TagViewSet, MessageViewSet, VideoViewSet, Video_tagViewSet, UpdateVideoViewViewSet
+from video.viewset import TagViewSet, MessageViewSet, VideoViewSet, Video_tagViewSet
 from rest_framework.authtoken import views
 
 router = routers.DefaultRouter()
@@ -10,7 +10,6 @@ router.register(r'tag', TagViewSet)
 router.register(r'message', MessageViewSet)
 router.register(r'video', VideoViewSet)
 router.register(r'video_tag', Video_tagViewSet)
-# router.register(r'update_count_view', UpdateVideoViewViewSet)
 
 
 urlpatterns = [
