@@ -10,6 +10,8 @@ class TagAdmin(admin.ModelAdmin):
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'duration', 'file', 'thumbnail', 'created', 'status']
+    search_fields = ['title']
+    list_filter = ('status',)  #Tuple
 
 
 @admin.register(Message)
