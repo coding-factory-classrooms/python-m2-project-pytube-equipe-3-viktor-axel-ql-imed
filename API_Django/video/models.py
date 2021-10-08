@@ -4,6 +4,9 @@ from django.db import models
 class Tag(models.Model):
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
 
 class Video(models.Model):
     title = models.CharField(max_length=50)
@@ -24,12 +27,18 @@ class Video(models.Model):
     ]
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default=STATUS_DRAFT)
 
+    def __str__(self):
+        return self.title
+
 
 class Message(models.Model):
     text = models.CharField(max_length=100)
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
     posted = models.DateTimeField(auto_now_add=True)
     # transmitter
+
+    def __str__(self):
+        return self.text
 
 
 class Video_tag(models.Model):
