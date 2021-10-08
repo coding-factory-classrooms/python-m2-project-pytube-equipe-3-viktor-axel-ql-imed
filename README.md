@@ -2,7 +2,7 @@
 
 ##  🧰 Project Setup
 
-To install the required packages, open a terminal with virtual environment activated and type the following commands:
+To install the required packages and launch the project, open a terminal with virtual environment activated and type the following commands:
 
 ```
     python3 -m pip install -r requirements.txt      # To install dependencies
