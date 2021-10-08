@@ -17,7 +17,9 @@ You need to have a ```.env``` file containing all the keys and values needed.
 
 You can refer to the ```.env.default``` file located at ```./API_Django/.env.default```. 
 
-Create a file named ```.env``` and copy-paste the keys form the ```.env.default``` file, the values should have been given to you
+Create a file named ```.env``` in folder ```API_Django``` and copy-paste the keys from the ```.env.default``` file, the values should have been given to you
+
+**Note** : the ```.env``` file should in the same folder as ```.env.default```
 
 
 
