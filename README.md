@@ -46,12 +46,6 @@ To make migrations :
     python3 manage.py makemigrations
 ```
 
-To create a superuser :
-
-```
-    python3 manage.py createsuperuser
-```
-
 To apply migrations :
 
 ```
@@ -62,6 +56,12 @@ To generate the required package install file:
 
 ```
     pip freeze > requirements.txt
+```
+
+To create a superuser :
+
+```
+    python3 manage.py createsuperuser
 ```
 
 ## 🚀 Deployment
