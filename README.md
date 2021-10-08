@@ -66,7 +66,7 @@ To create a superuser :
 
 ## 🚀 Deployment
 
-To deploy the app, merge all the code to main branch, from terminal type the following command :
+To deploy the app, merge all the code to ```main``` branch, from terminal type the following command :
 
 ```
     git push heroku main && heroku run python manage.py migrate
