@@ -69,6 +69,6 @@ class TestTask(models.Model):
     class Meta:
         # ces permissions là sont add que si leur identifiant n'existe pas déjà
         permissions = [
-            ("test_change_task_status", "test aarara  Can change the status of tasks"),
-            ("test_close_task", "Test Can removeaaaaaaa a task by setting its status as closed"),
+            ("test_1-2", "test 1 2"),
+            ("test_3_4", "Test 3 4"),
         ]
