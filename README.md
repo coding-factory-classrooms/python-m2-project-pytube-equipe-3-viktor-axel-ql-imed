@@ -2,7 +2,6 @@
 
 ## 📝 Notes
 
-
 Project is available on this <a href="https://pytube-backend.herokuapp.com/admin/login/?next=/admin/" target="_blank">link</a>
 
 To install dependencies, open a terminal and run :
@@ -37,9 +36,10 @@ To apply migrations :
 
 To generate the required package install file:
 
-````
+```
     pip freeze > requirements.txt
 ```
+
 ## 🚀 Deployment
 
 To deploy the app, merge all the code to main branch, from terminal type the following command :
@@ -50,8 +50,9 @@ To deploy the app, merge all the code to main branch, from terminal type the fol
 
 Your local user will not work by default in production as the same databse that you have locally is not running.
 
-To create a production super admin you can type the following command : 
+To create a production super admin you can type the following command :
 
 ```
     heroku run python manage.py createsuperuser
 ```
+
