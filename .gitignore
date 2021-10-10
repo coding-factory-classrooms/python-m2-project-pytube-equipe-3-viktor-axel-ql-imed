@@ -6,9 +6,11 @@ node_modules
 # dependencies
 
 
-db.sqlite3
+#db.sqlite3
 
 __pycache__
+
+.env
 
 venv
 
