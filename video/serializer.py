@@ -24,6 +24,7 @@ class VideoSerializer(serializers.ModelSerializer):
         model = Video
         fields = '__all__'
 
+
 class Video_tagSerializer(serializers.ModelSerializer):
     video_title = serializers.ReadOnlyField(source='video.title')
     tag_name = serializers.ReadOnlyField(source='tag.name')
