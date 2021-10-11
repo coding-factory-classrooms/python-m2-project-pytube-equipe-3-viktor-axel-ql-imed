@@ -80,3 +80,4 @@ To create a production super admin you can type the following command :
     heroku run python manage.py createsuperuser
 ```
 
+
