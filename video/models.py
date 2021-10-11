@@ -105,12 +105,11 @@ def post_save_video_signal(sender, instance, created, raw, using, update_fields=
     if not instance.thumbnail:
         random_id = id_generator()
         file_key = random_id+".png"
-        ff = FFmpeg(inputs={base_url+suffix_url: None}, outputs={os.path.join(
-            settings.MEDIA_ROOT, file_key): ['-ss', '00:00:4', '-vframes', '1']})
-        ff.run()
-        print(os.path.join(settings.MEDIA_ROOT, file_key))
-
         file_path = os.path.join(settings.MEDIA_ROOT, file_key)
+        print('filepath')
+        print(file_path)
+        ff = FFmpeg(inputs={base_url+suffix_url: None}, outputs={file_path: ['-ss', '00:00:4', '-vframes', '1']})
+        ff.run()
         print(file_path)
         args = {'ACL': 'public-read', 'ContentType': 'image/jpeg'}
         upload_file_key = "thumbnails/"+file_key
