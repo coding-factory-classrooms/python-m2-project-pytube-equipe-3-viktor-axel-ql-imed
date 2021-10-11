@@ -59,13 +59,16 @@ def post_save_video_signal(sender, instance, created, raw, using, update_fields=
     print('coco on passe ici')
     if not instance.thumbnail:
         ff = FFmpeg(executable='C:/projets-info/python-m2-project-pytube-equipe-3-viktor-axel-ql-imed/ffmpeg/bin'
-                               '/ffmpeg.exe', inputs={'C:/Users/agasn/Videos/fragments vidéos obs/2018-08-29 17-43-55.mp4': None}, outputs={"out%d.png": ['-vf', 'fps=1']})
+                               '/ffmpeg.exe',
+                    inputs={'C:/Users/agasn/Videos/fragments vidéos obs/2018-08-29 17-43-55.mp4': None},
+                    outputs={"output.png": ['-ss', '00:00:4', '-vframes', '1']})
 
         ff.run()
 
         instance.thumbnail = 'ouput.png'
 
         Video.save(instance)
+
 
 class Message(models.Model):
     text = models.CharField(max_length=100)
