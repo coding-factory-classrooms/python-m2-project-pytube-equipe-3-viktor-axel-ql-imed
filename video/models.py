@@ -111,6 +111,7 @@ def post_save_video_signal(sender, instance, created, raw, using, update_fields=
         print(os.path.join(settings.MEDIA_ROOT, file_key))
 
         file_path = os.path.join(settings.MEDIA_ROOT, file_key)
+        print(file_path)
         args = {'ACL': 'public-read', 'ContentType': 'image/jpeg'}
         upload_file_key = "thumbnails/"+file_key
         upload_file(file_path, 'pytube', upload_file_key, args)
