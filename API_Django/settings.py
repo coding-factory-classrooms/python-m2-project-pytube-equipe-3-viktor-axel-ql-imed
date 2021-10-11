@@ -18,7 +18,7 @@ SECRET_KEY = 'django-insecure-coeh_sa%sdk4jpcj!(40=y=9#mxai9ok$(ozph1!4&)5)8p(bg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['pytube-backend.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['pytube-backend.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'storages'
 ]
 
-FFMPEG_PATH=""
+FFMPEG_PATH = ""
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -71,15 +71,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'API_Django.wsgi.application'
 
-
-
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             "hosts": [("localhost", 6379)],
         },
-        'ROUTING': 'routing.application',
 
     },
 }
@@ -134,7 +131,7 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'medias')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'medias')
 
 print('MEDIA_ROOT', MEDIA_ROOT)
 # Default primary key field type
@@ -186,17 +183,13 @@ LOGGING = {
     }
 }
 
-
-
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_S3_REGION_NAME= "eu-west-3"
-AWS_S3_SIGNATURE_VERSION="s3v4"
-AWS_ACCESS_KEY_ID= env('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY=env('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME=env('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = "eu-west-3"
+AWS_S3_SIGNATURE_VERSION = "s3v4"
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
 AWS_QUERYSTRING_AUTH = False
-AWS_S3_FILE_OVERWRITE= False
-
-
+AWS_S3_FILE_OVERWRITE = False
 
 django_heroku.settings(locals())
