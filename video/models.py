@@ -5,6 +5,9 @@ from django.db.models.signals import post_save
 from . import video_metadata
 from .validators import validate_file_extension
 from ffmpy import FFmpeg
+from django.conf import settings
+
+BASE_DIR = 'https://pytube.s3.amazonaws.com/' # settings.BASE_DIR
 
 
 class Tag(models.Model):
@@ -38,12 +41,6 @@ class Video(models.Model):
     def __str__(self):
         return self.title
 
-    # def save(self, *args, **kwargs):
-    #     url = self.file.name
-    #     print("coco" - url)
-    #     super().create(*args, **kwargs)
-    #     return url
-
     def save(self, *args, **kwargs):
         # Code très difficile à tester
         # Il faut mocker beaucoup trop de choses
@@ -56,12 +53,11 @@ class Video(models.Model):
 
 
 def post_save_video_signal(sender, instance, created, raw, using, update_fields=None, **kwargs):
-    print('coco on passe ici')
     if not instance.thumbnail:
         ff = FFmpeg(executable='C:/projets-info/python-m2-project-pytube-equipe-3-viktor-axel-ql-imed/ffmpeg/bin'
                                '/ffmpeg.exe',
-                    inputs={'C:/Users/agasn/Videos/fragments vidéos obs/2018-08-29 17-43-55.mp4': None},
-                    outputs={"output.png": ['-ss', '00:00:4', '-vframes', '1']})
+                    inputs={str(BASE_DIR) + str(instance.file.name): None},
+                    outputs={"output.png": ['-ss', '00:00:4', '-vframes', '1']}) #if output.png exists, delete it and it works
 
         ff.run()
 
