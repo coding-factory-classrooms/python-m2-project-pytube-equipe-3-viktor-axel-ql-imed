@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import AnonymousUser
 from video.models import Tag, Message, Video, Video_tag
 from video.serializer import VideoSerializer, TagSerializer, MessageSerializer, Video_tagSerializer
+from django.db.models.signals import post_save
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -21,7 +22,7 @@ class MessageViewSet(viewsets.ModelViewSet):
 class VideoViewSet(viewsets.ModelViewSet):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
-
+    print('view set called')
     def retrieve(self, request, *args, **kwargs):
         print('------- fonction "retrievce" dans VideoViewSet-------')
         instance = self.get_object()
@@ -41,3 +42,8 @@ class Video_tagViewSet(viewsets.ModelViewSet):
     queryset = Video_tag.objects.all()
     serializer_class = Video_tagSerializer
     lookup_field = 'tag'
+
+def post_save_video_signal(sender, instance, created, raw, using, update_fields=None, **kwargs):
+    print('From viewset')  
+    print("Instance",instance.__dict__)
+post_save.connect(post_save_video_signal, sender=Video)

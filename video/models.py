@@ -5,7 +5,9 @@ from django.db.models.signals import post_save
 from . import video_metadata
 from .validators import validate_file_extension
 from ffmpy import FFmpeg
-
+import urllib.request
+import os
+from API_Django import settings
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
@@ -55,11 +57,11 @@ class Video(models.Model):
         print(**kwargs)
         print(self.duration)
         # print("Path",self.file.path)
-        print("Name",self.file.name)
-        ff = FFmpeg( inputs={"https://pytube.s3.amazonaws.com/VideoMP4/Sample-MP4-Video-File-for-Testing_XJGTQsR.mp4": None}, outputs={"output.png": ['-ss', '00:00:4', '-vframes', '1']})
-        print(ff.cmd)
-        print('cmd should be printed')
-        ff.run()
+        print("Name", self.file.name)
+        # ff = FFmpeg( inputs={"https://pytube.s3.amazonaws.com/VideoMP4/Sample-MP4-Video-File-for-Testing_XJGTQsR.mp4": None}, outputs={"output.png": ['-ss', '00:00:4', '-vframes', '1']})
+        # print(ff.cmd)
+        # print('cmd should be printed')
+        # ff.run()
         # ff
         # Code très difficile à tester
         # Il faut mocker beaucoup trop de choses
@@ -69,21 +71,28 @@ class Video(models.Model):
             if metadata:
                 self.duration = metadata.duration
         super().save(*args, **kwargs)
-        extra_handle(self)
+
+
 def extra_handle(self):
     print("EXTRA handling method can be called, here you could use another funnction to extract  with link")
 
+
 def post_save_video_signal(sender, instance, created, raw, using, update_fields=None, **kwargs):
     print('coco on passe ici')
+    print('\n')
+    print(created)
+    print(raw)
+    print("Sender", sender)
+    base_url = 'https://pytube.s3.amazonaws.com/'
+    suffix_url = instance.__dict__['file']
     if not instance.thumbnail:
-        ff = FFmpeg(executable='C:/projets-info/python-m2-project-pytube-equipe-3-viktor-axel-ql-imed/ffmpeg/bin'
-                               '/ffmpeg.exe', inputs={'C:/Users/agasn/Videos/fragments vidéos obs/2018-08-29 17-43-55.mp4': None}, outputs={"out%d.png": ['-vf', 'fps=1']})
-
+        ff = FFmpeg( inputs={base_url+suffix_url: None}, outputs={os.path.join(settings.MEDIA_ROOT, "outputs.png"): ['-ss', '00:00:4', '-vframes', '1']})
         ff.run()
+        instance.thumbnail = "outputs.png"
+        instance.save()
 
-        instance.thumbnail = 'ouput.png'
-
-        Video.save(instance)
+        #instance.thumbnail = "output.png"
+        
 
 class Message(models.Model):
     text = models.CharField(max_length=100)
