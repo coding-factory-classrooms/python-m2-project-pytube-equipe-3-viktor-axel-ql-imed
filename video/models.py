@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
 
 from . import video_metadata
 from .validators import validate_file_extension
+from ffmpy import FFmpeg
 
 
 class Tag(models.Model):
@@ -36,6 +38,12 @@ class Video(models.Model):
     def __str__(self):
         return self.title
 
+    # def save(self, *args, **kwargs):
+    #     url = self.file.name
+    #     print("coco" - url)
+    #     super().create(*args, **kwargs)
+    #     return url
+
     def save(self, *args, **kwargs):
         # Code très difficile à tester
         # Il faut mocker beaucoup trop de choses
@@ -47,6 +55,17 @@ class Video(models.Model):
         super().save(*args, **kwargs)
 
 
+def post_save_video_signal(sender, instance, created, raw, using, update_fields=None, **kwargs):
+    print('coco on passe ici')
+    if not instance.thumbnail:
+        ff = FFmpeg(executable='C:/projets-info/python-m2-project-pytube-equipe-3-viktor-axel-ql-imed/ffmpeg/bin'
+                               '/ffmpeg.exe', inputs={'C:/Users/agasn/Videos/fragments vidéos obs/2018-08-29 17-43-55.mp4': None}, outputs={"out%d.png": ['-vf', 'fps=1']})
+
+        ff.run()
+
+        instance.thumbnail = 'ouput.png'
+
+        Video.save(instance)
 
 class Message(models.Model):
     text = models.CharField(max_length=100)
@@ -65,10 +84,12 @@ class Video_tag(models.Model):
 
 
 class TestTask(models.Model):
-
     class Meta:
         # ces permissions là sont add que si leur identifiant n'existe pas déjà
         permissions = [
             ("test_1-2", "test 1 2"),
             ("test_3_4", "Test 3 4"),
         ]
+
+
+post_save.connect(post_save_video_signal, sender=Video)

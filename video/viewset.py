@@ -41,4 +41,3 @@ class Video_tagViewSet(viewsets.ModelViewSet):
     queryset = Video_tag.objects.all()
     serializer_class = Video_tagSerializer
     lookup_field = 'tag'
-
