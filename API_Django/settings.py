@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'storages'
 ]
 
+FFMPEG_PATH=""
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -132,7 +134,7 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR),'API_Django')
+MEDIA_ROOT = os.path.join(BASE_DIR,'medias')
 
 print('MEDIA_ROOT', MEDIA_ROOT)
 # Default primary key field type

@@ -5,10 +5,16 @@ from django.db.models.signals import post_save
 from . import video_metadata
 from .validators import validate_file_extension
 from ffmpy import FFmpeg
+import urllib.request
+import os
+from API_Django import settings
+import random
+import string
+import boto3
+
 from django.conf import settings
 
-BASE_DIR = 'https://pytube.s3.amazonaws.com/' # settings.BASE_DIR
-
+BASE_DIR = 'https://pytube.s3.amazonaws.com/'
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
@@ -17,10 +23,18 @@ class Tag(models.Model):
         return self.name
 
 
+s3client = boto3.client('s3')
+
+
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+
 class Video(models.Model):
     title = models.CharField(max_length=50)
     duration = models.IntegerField()
-    file = models.FileField(blank=False, upload_to='VideoMP4', validators=[validate_file_extension])
+    file = models.FileField(blank=False, upload_to='VideoMP4', validators=[
+                            validate_file_extension])
     thumbnail = models.ImageField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     count_view = models.IntegerField(default=0)
@@ -36,12 +50,27 @@ class Video(models.Model):
         (STATUS_PRIVATE, 'Privé'),  # Tuple
         (STATUS_UNLISTED, 'Non repertorié'),  # Tuple
     ]
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default=STATUS_DRAFT)
+    status = models.CharField(
+        max_length=50, choices=STATUS_CHOICES, default=STATUS_DRAFT)
 
     def __str__(self):
         return self.title
+    print('UPLOADING VIDEO')
 
     def save(self, *args, **kwargs):
+        print('UPLOADING VIDEO fucntion save')
+        print(self)
+
+        print(*args)
+        print(**kwargs)
+        print(self.duration)
+        # print("Path",self.file.path)
+        print("Name", self.file.name)
+        # ff = FFmpeg( inputs={"https://pytube.s3.amazonaws.com/VideoMP4/Sample-MP4-Video-File-for-Testing_XJGTQsR.mp4": None}, outputs={"output.png": ['-ss', '00:00:4', '-vframes', '1']})
+        # print(ff.cmd)
+        # print('cmd should be printed')
+        # ff.run()
+        # ff
         # Code très difficile à tester
         # Il faut mocker beaucoup trop de choses
         # pour juste vérifier que le modèle est correctement mis à jour
@@ -52,18 +81,45 @@ class Video(models.Model):
         super().save(*args, **kwargs)
 
 
+def extra_handle(self):
+    print("EXTRA handling method can be called, here you could use another funnction to extract  with link")
+
+
+def upload_file(file_name, bucket, object_name=None, args=None):
+    if object_name is None:
+        object_name = file_name
+    response = s3client.upload_file(
+        file_name, bucket, object_name, ExtraArgs=args)
+    print(response)
+    return response
+
+
 def post_save_video_signal(sender, instance, created, raw, using, update_fields=None, **kwargs):
+    print('coco on passe ici')
+    print('\n')
+    print(created)
+    print(raw)
+    print("Sender", sender)
+    base_url = 'https://pytube.s3.amazonaws.com/'
+    suffix_url = instance.__dict__['file']
     if not instance.thumbnail:
-        ff = FFmpeg(executable='C:/projets-info/python-m2-project-pytube-equipe-3-viktor-axel-ql-imed/ffmpeg/bin'
-                               '/ffmpeg.exe',
-                    inputs={str(BASE_DIR) + str(instance.file.name): None},
-                    outputs={"output.png": ['-ss', '00:00:4', '-vframes', '1']}) #if output.png exists, delete it and it works
-
+        random_id = id_generator()
+        file_key = random_id+".png"
+        ff = FFmpeg(inputs={base_url+suffix_url: None}, outputs={os.path.join(
+            settings.MEDIA_ROOT, file_key): ['-ss', '00:00:4', '-vframes', '1']})
         ff.run()
+        print(os.path.join(settings.MEDIA_ROOT, file_key))
 
-        instance.thumbnail = 'ouput.png'
+        file_path = os.path.join(settings.MEDIA_ROOT, file_key)
+        args = {'ACL': 'public-read', 'ContentType': 'image/jpeg'}
+        upload_file_key = "thumbnails/"+file_key
+        upload_file(file_path, 'pytube', upload_file_key, args)
+        instance.thumbnail = upload_file_key
+        instance.save()
+        os.remove(file_path)
 
-        Video.save(instance)
+        #instance.thumbnail = "output.png"
+
 
 
 class Message(models.Model):

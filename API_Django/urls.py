@@ -13,8 +13,8 @@ router.register(r'tag', TagViewSet)
 router.register(r'message', MessageViewSet)
 router.register(r'video', VideoViewSet)
 router.register(r'video_tag', Video_tagViewSet)
-print('going to debug')
-print(router.urls)
+# print('going to debug')
+# print(router.urls)
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', basic_view.home),
