@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'storages'
 ]
 
+FFMPEG_PATH=""
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',

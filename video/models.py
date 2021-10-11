@@ -3,6 +3,7 @@ from django.db import models
 
 from . import video_metadata
 from .validators import validate_file_extension
+from ffmpy import FFmpeg
 
 
 class Tag(models.Model):
@@ -15,7 +16,8 @@ class Tag(models.Model):
 class Video(models.Model):
     title = models.CharField(max_length=50)
     duration = models.IntegerField()
-    file = models.FileField(blank=False, upload_to='VideoMP4', validators=[validate_file_extension])
+    file = models.FileField(blank=False, upload_to='VideoMP4', validators=[
+                            validate_file_extension])
     thumbnail = models.ImageField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     count_view = models.IntegerField(default=0)
@@ -31,12 +33,27 @@ class Video(models.Model):
         (STATUS_PRIVATE, 'Privé'),  # Tuple
         (STATUS_UNLISTED, 'Non repertorié'),  # Tuple
     ]
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default=STATUS_DRAFT)
+    status = models.CharField(
+        max_length=50, choices=STATUS_CHOICES, default=STATUS_DRAFT)
 
     def __str__(self):
         return self.title
+    print('UPLOADING VIDEO')
 
     def save(self, *args, **kwargs):
+        print('UPLOADING VIDEO fucntion save')
+        print(self)
+
+        print(*args)
+        print(**kwargs)
+        print(self.duration)
+        # print("Path",self.file.path)
+        print("Name",self.file.name)
+        ff = FFmpeg( inputs={"https://pytube.s3.amazonaws.com/VideoMP4/Sample-MP4-Video-File-for-Testing_XJGTQsR.mp4": None}, outputs={"output.png": ['-ss', '00:00:4', '-vframes', '1']})
+        print(ff.cmd)
+        print('cmd should be printed')
+        ff.run()
+        # ff
         # Code très difficile à tester
         # Il faut mocker beaucoup trop de choses
         # pour juste vérifier que le modèle est correctement mis à jour
@@ -45,8 +62,10 @@ class Video(models.Model):
             if metadata:
                 self.duration = metadata.duration
         super().save(*args, **kwargs)
+        extra_handle(self)
 
-
+def extra_handle(self):
+    print("EXTRA handling method can be called, here you could use another funnction to extract  with link")
 
 class Message(models.Model):
     text = models.CharField(max_length=100)
