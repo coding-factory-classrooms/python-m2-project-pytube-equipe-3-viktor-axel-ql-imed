@@ -8,12 +8,23 @@ from ffmpy import FFmpeg
 import urllib.request
 import os
 from API_Django import settings
+import random
+import string
+import boto3
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
+
+
+s3client = boto3.client('s3')
+
+
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 
 class Video(models.Model):
@@ -77,6 +88,15 @@ def extra_handle(self):
     print("EXTRA handling method can be called, here you could use another funnction to extract  with link")
 
 
+def upload_file(file_name, bucket, object_name=None, args=None):
+    if object_name is None:
+        object_name = file_name
+    response = s3client.upload_file(
+        file_name, bucket, object_name, ExtraArgs=args)
+    print(response)
+    return response
+
+
 def post_save_video_signal(sender, instance, created, raw, using, update_fields=None, **kwargs):
     print('coco on passe ici')
     print('\n')
@@ -86,13 +106,23 @@ def post_save_video_signal(sender, instance, created, raw, using, update_fields=
     base_url = 'https://pytube.s3.amazonaws.com/'
     suffix_url = instance.__dict__['file']
     if not instance.thumbnail:
-        ff = FFmpeg( inputs={base_url+suffix_url: None}, outputs={os.path.join(settings.MEDIA_ROOT, "outputs.png"): ['-ss', '00:00:4', '-vframes', '1']})
+        random_id = id_generator()
+        file_key = random_id+".png"
+        ff = FFmpeg(inputs={base_url+suffix_url: None}, outputs={os.path.join(
+            settings.MEDIA_ROOT, file_key): ['-ss', '00:00:4', '-vframes', '1']})
         ff.run()
-        instance.thumbnail = "outputs.png"
+        print(os.path.join(settings.MEDIA_ROOT, file_key))
+
+        file_path = os.path.join(settings.MEDIA_ROOT, file_key)
+        args = {'ACL': 'public-read', 'ContentType': 'image/jpeg'}
+        upload_file_key = "thumbnails/"+file_key
+        upload_file(file_path, 'pytube', upload_file_key, args)
+        instance.thumbnail = upload_file_key
         instance.save()
+        os.remove(file_path)
 
         #instance.thumbnail = "output.png"
-        
+
 
 class Message(models.Model):
     text = models.CharField(max_length=100)
