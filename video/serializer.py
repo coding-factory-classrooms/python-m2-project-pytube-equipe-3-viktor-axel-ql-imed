@@ -9,11 +9,10 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    video_id = serializers.CharField(source='video.id')
 
     class Meta:
         model = Message
-        fields = ['id', 'text', 'video_id', 'posted']
+        fields = ['id', 'text', 'video', 'posted']
 
     def create(self, validated_data):
         return Message.objects.create(**validated_data)

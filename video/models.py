@@ -12,6 +12,9 @@ import random
 import string
 import boto3
 
+from django.conf import settings
+
+BASE_DIR = 'https://pytube.s3.amazonaws.com/'
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
@@ -53,12 +56,6 @@ class Video(models.Model):
     def __str__(self):
         return self.title
     print('UPLOADING VIDEO')
-
-    # def save(self, *args, **kwargs):
-    #     url = self.file.name
-    #     print("coco" - url)
-    #     super().create(*args, **kwargs)
-    #     return url
 
     def save(self, *args, **kwargs):
         print('UPLOADING VIDEO fucntion save')
@@ -122,6 +119,7 @@ def post_save_video_signal(sender, instance, created, raw, using, update_fields=
         os.remove(file_path)
 
         #instance.thumbnail = "output.png"
+
 
 
 class Message(models.Model):

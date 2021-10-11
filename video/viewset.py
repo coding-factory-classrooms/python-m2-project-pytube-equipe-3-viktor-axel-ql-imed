@@ -32,7 +32,7 @@ class VideoViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def get_permissions(self):
-        if self.action == 'retrieve':
+        if self.action == 'retrieve' or self.action == 'list':
             return [AllowAny(), ]
         return super().get_permissions()
 
