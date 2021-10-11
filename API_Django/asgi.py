@@ -18,10 +18,10 @@ import video.routing
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'API_Django.settings')
 
 application = ProtocolTypeRouter({
-    "websocket": AuthMiddlewareStack(
-        URLRouter(
-            video.routing.websocket_urlpatterns
-        )
-    ),
+    #"websocket": AuthMiddlewareStack(
+     #   URLRouter(
+      #      video.routing.websocket_urlpatterns
+       # )
+    #),
     "http": get_asgi_application(),
 })

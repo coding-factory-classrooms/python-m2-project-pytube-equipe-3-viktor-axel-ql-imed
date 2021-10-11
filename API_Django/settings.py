@@ -69,7 +69,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'API_Django.wsgi.application'
 
-ASGI_APPLICATION = 'API_Django.asgi.application'
+
 
 CHANNEL_LAYERS = {
     'default': {
@@ -81,6 +81,8 @@ CHANNEL_LAYERS = {
 
     },
 }
+
+ASGI_APPLICATION = 'API_Django.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
