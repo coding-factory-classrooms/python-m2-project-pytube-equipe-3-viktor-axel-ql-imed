@@ -16,6 +16,7 @@ from django.conf import settings
 
 BASE_DIR = 'https://pytube.s3.amazonaws.com/'
 
+
 class Tag(models.Model):
     name = models.CharField(max_length=50)
 
@@ -34,7 +35,7 @@ class Video(models.Model):
     title = models.CharField(max_length=50)
     duration = models.IntegerField()
     file = models.FileField(blank=False, upload_to='VideoMP4', validators=[
-                            validate_file_extension])
+        validate_file_extension])
     thumbnail = models.ImageField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     count_view = models.IntegerField(default=0)
@@ -45,22 +46,22 @@ class Video(models.Model):
     STATUS_PRIVATE = 'private'
     STATUS_UNLISTED = 'unlisted'
     STATUS_CHOICES = [
-        (STATUS_DRAFT, 'Brouillon'),  # Tuple
-        (STATUS_PUBLISHED, 'Publié'),  # Tuple
-        (STATUS_PRIVATE, 'Privé'),  # Tuple
-        (STATUS_UNLISTED, 'Non repertorié'),  # Tuple
+        (STATUS_DRAFT, 'Brouillon'),            # Tuple
+        (STATUS_PUBLISHED, 'Publié'),           # Tuple
+        (STATUS_PRIVATE, 'Privé'),              # Tuple
+        (STATUS_UNLISTED, 'Non repertorié'),    # Tuple
     ]
     status = models.CharField(
         max_length=50, choices=STATUS_CHOICES, default=STATUS_DRAFT)
 
     def __str__(self):
         return self.title
+
     print('UPLOADING VIDEO')
 
     def save(self, *args, **kwargs):
-        print('UPLOADING VIDEO fucntion save')
+        print('UPLOADING VIDEO function save')
         print(self)
-
         print(*args)
         print(**kwargs)
         print(self.duration)
@@ -104,22 +105,21 @@ def post_save_video_signal(sender, instance, created, raw, using, update_fields=
     suffix_url = instance.__dict__['file']
     if not instance.thumbnail:
         random_id = id_generator()
-        file_key = random_id+".png"
-        ff = FFmpeg(executable=r'D:\python-m2-project-pytube-equipe-3-viktor-axel-ql-imed\ffmpeg\bin\ffmpeg.exe', inputs={base_url+suffix_url: None}, outputs={os.path.join(
+        file_key = random_id + ".png"
+        ff = FFmpeg(inputs={base_url + suffix_url: None}, outputs={os.path.join(
             settings.MEDIA_ROOT, file_key): ['-ss', '00:00:4', '-vframes', '1']})
         ff.run()
         print(os.path.join(settings.MEDIA_ROOT, file_key))
 
         file_path = os.path.join(settings.MEDIA_ROOT, file_key)
         args = {'ACL': 'public-read', 'ContentType': 'image/jpeg'}
-        upload_file_key = "thumbnails/"+file_key
+        upload_file_key = "thumbnails/" + file_key
         upload_file(file_path, 'pytube', upload_file_key, args)
         instance.thumbnail = upload_file_key
         instance.save()
         os.remove(file_path)
 
-        #instance.thumbnail = "output.png"
-
+        # instance.thumbnail = "output.png"
 
 
 class Message(models.Model):
