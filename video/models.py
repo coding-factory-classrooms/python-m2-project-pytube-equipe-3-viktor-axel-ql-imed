@@ -106,10 +106,10 @@ def post_save_video_signal(sender, instance, created, raw, using, update_fields=
         random_id = id_generator()
         file_key = random_id+".png"
         file_path = os.path.join(settings.MEDIA_ROOT, file_key)
-        r = requests.get(url = "http://localhost:5000/")
-        data = r.json()
+        # r = requests.get(url = "http://localhost:5000/")
+        # data = r.json()
 
-        print(data)
+        # print(data)
         # print("\n")
         print('filepath')
         print(file_path)
