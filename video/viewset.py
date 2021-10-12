@@ -1,9 +1,6 @@
 from rest_framework import viewsets, generics, status
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.decorators import authentication_classes, permission_classes, api_view
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from django.contrib.auth.models import AnonymousUser
 from video.models import Tag, Message, Video, Video_tag
 from video.serializer import VideoSerializer, TagSerializer, MessageSerializer, Video_tagSerializer
 from django.db.models.signals import post_save
@@ -23,6 +20,9 @@ class MessageViewSet(viewsets.ModelViewSet):
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 class VideoViewSet(viewsets.ModelViewSet):
     queryset = Video.objects.all()
@@ -30,7 +30,7 @@ class VideoViewSet(viewsets.ModelViewSet):
     print('view set called')
 
     def retrieve(self, request, *args, **kwargs):
-        print('------- fonction "retrievce" dans VideoViewSet-------')
+        print('------- fonction "retrieve" dans VideoViewSet-------')
         instance = self.get_object()
         instance.count_view += 1
         instance.save()

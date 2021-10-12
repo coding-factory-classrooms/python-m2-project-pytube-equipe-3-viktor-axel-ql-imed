@@ -16,7 +16,7 @@ class VideoAdmin(admin.ModelAdmin):
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ['id', 'text', 'video', 'posted']
+    list_display = ['id', 'text', 'video', 'posted', 'user']
 
 
 @admin.register(Video_tag)

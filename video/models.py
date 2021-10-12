@@ -105,7 +105,7 @@ def post_save_video_signal(sender, instance, created, raw, using, update_fields=
     if not instance.thumbnail:
         random_id = id_generator()
         file_key = random_id+".png"
-        ff = FFmpeg(inputs={base_url+suffix_url: None}, outputs={os.path.join(
+        ff = FFmpeg(executable=r'D:\python-m2-project-pytube-equipe-3-viktor-axel-ql-imed\ffmpeg\bin\ffmpeg.exe', inputs={base_url+suffix_url: None}, outputs={os.path.join(
             settings.MEDIA_ROOT, file_key): ['-ss', '00:00:4', '-vframes', '1']})
         ff.run()
         print(os.path.join(settings.MEDIA_ROOT, file_key))
@@ -126,6 +126,7 @@ class Message(models.Model):
     text = models.CharField(max_length=100)
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
     posted = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     # transmitter
 

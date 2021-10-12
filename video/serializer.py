@@ -9,13 +9,13 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Message
-        fields = ['id', 'text', 'video', 'posted']
+        fields = ['id', 'text', 'video', 'posted', 'user']
 
     def create(self, validated_data):
         return Message.objects.create(**validated_data)
+
 
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,4 +30,3 @@ class Video_tagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video_tag
         fields = ['id', 'video_title', 'tag_name']
-
