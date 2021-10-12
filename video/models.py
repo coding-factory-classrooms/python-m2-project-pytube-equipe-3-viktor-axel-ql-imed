@@ -106,24 +106,22 @@ def post_save_video_signal(sender, instance, created, raw, using, update_fields=
         random_id = id_generator()
         file_key = random_id+".png"
         file_path = os.path.join(settings.MEDIA_ROOT, file_key)
-        # r = requests.get(url = "http://localhost:5000/")
-        # data = r.json()
+     
 
         # print(data)
         # print("\n")
         print('filepath')
         print(file_path)
-        # ff = FFmpeg(inputs={base_url+suffix_url: None}, outputs={file_path: ['-ss', '00:00:4', '-vframes', '1']})
-        # ff.run()
+        ff = FFmpeg(inputs={base_url+suffix_url: None}, outputs={file_path: ['-ss', '00:00:4', '-vframes', '1']})
+        ff.run()
         print(file_path)
-        # args = {'ACL': 'public-read', 'ContentType': 'image/jpeg'}
-        # upload_file_key = "thumbnails/"+file_key
-        # upload_file(file_path, 'pytube', upload_file_key, args)
-        # instance.thumbnail = upload_file_key
-        # instance.save()
-        # os.remove(file_path)
+        args = {'ACL': 'public-read', 'ContentType': 'image/jpeg'}
+        upload_file_key = "thumbnails/"+file_key
+        upload_file(file_path, 'pytube', upload_file_key, args)
+        instance.thumbnail = upload_file_key
+        instance.save()
+        os.remove(file_path)
 
-        #instance.thumbnail = "output.png"
 
 
 

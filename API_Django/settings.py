@@ -20,6 +20,10 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['pytube-backend.herokuapp.com','127.0.0.1']
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -27,7 +31,7 @@ INSTALLED_APPS = [
     'video',
     'rest_framework',
     'rest_framework.authtoken',
-
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -37,10 +41,12 @@ INSTALLED_APPS = [
     'storages'
 ]
 
-FFMPEG_PATH=""
-
+FFMPEG_PATH = ""
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -49,14 +55,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+APPEND_SLASH=True
 ROOT_URLCONF = 'API_Django.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,7 +75,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'API_Django.wsgi.application'
-
 
 
 CHANNEL_LAYERS = {
@@ -134,7 +138,7 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'medias')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'medias')
 
 print('MEDIA_ROOT', MEDIA_ROOT)
 # Default primary key field type
@@ -187,16 +191,14 @@ LOGGING = {
 }
 
 
-
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_S3_REGION_NAME= "eu-west-3"
-AWS_S3_SIGNATURE_VERSION="s3v4"
-AWS_ACCESS_KEY_ID= env('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY=env('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME=env('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = "eu-west-3"
+AWS_S3_SIGNATURE_VERSION = "s3v4"
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
 AWS_QUERYSTRING_AUTH = False
-AWS_S3_FILE_OVERWRITE= False
-
+AWS_S3_FILE_OVERWRITE = False
 
 
 django_heroku.settings(locals())
