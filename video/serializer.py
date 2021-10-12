@@ -17,7 +17,6 @@ class MessageSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return Message.objects.create(**validated_data)
 
-
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
