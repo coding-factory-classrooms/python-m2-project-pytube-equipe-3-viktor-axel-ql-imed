@@ -5,7 +5,6 @@ node_modules
 
 # dependencies
 ffmpeg
-
 db.sqlite3
 
 __pycache__

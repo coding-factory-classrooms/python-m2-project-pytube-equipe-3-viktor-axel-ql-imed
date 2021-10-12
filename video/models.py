@@ -16,6 +16,7 @@ from django.conf import settings
 
 BASE_DIR = 'https://pytube.s3.amazonaws.com/'
 
+
 class Tag(models.Model):
     name = models.CharField(max_length=50)
 
@@ -34,7 +35,7 @@ class Video(models.Model):
     title = models.CharField(max_length=50)
     duration = models.IntegerField()
     file = models.FileField(blank=False, upload_to='VideoMP4', validators=[
-                            validate_file_extension])
+        validate_file_extension])
     thumbnail = models.ImageField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     count_view = models.IntegerField(default=0)
@@ -45,22 +46,22 @@ class Video(models.Model):
     STATUS_PRIVATE = 'private'
     STATUS_UNLISTED = 'unlisted'
     STATUS_CHOICES = [
-        (STATUS_DRAFT, 'Brouillon'),  # Tuple
-        (STATUS_PUBLISHED, 'Publié'),  # Tuple
-        (STATUS_PRIVATE, 'Privé'),  # Tuple
-        (STATUS_UNLISTED, 'Non repertorié'),  # Tuple
+        (STATUS_DRAFT, 'Brouillon'),            # Tuple
+        (STATUS_PUBLISHED, 'Publié'),           # Tuple
+        (STATUS_PRIVATE, 'Privé'),              # Tuple
+        (STATUS_UNLISTED, 'Non repertorié'),    # Tuple
     ]
     status = models.CharField(
         max_length=50, choices=STATUS_CHOICES, default=STATUS_DRAFT)
 
     def __str__(self):
         return self.title
+
     print('UPLOADING VIDEO')
 
     def save(self, *args, **kwargs):
-        print('UPLOADING VIDEO fucntion save')
+        print('UPLOADING VIDEO function save')
         print(self)
-
         print(*args)
         print(**kwargs)
         print(self.duration)
@@ -116,7 +117,7 @@ def post_save_video_signal(sender, instance, created, raw, using, update_fields=
         ff.run()
         print(file_path)
         args = {'ACL': 'public-read', 'ContentType': 'image/jpeg'}
-        upload_file_key = "thumbnails/"+file_key
+        upload_file_key = "thumbnails/" + file_key
         upload_file(file_path, 'pytube', upload_file_key, args)
         instance.thumbnail = upload_file_key
         instance.save()
@@ -124,11 +125,11 @@ def post_save_video_signal(sender, instance, created, raw, using, update_fields=
 
 
 
-
 class Message(models.Model):
     text = models.CharField(max_length=100)
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
     posted = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     # transmitter
 

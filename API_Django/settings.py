@@ -18,7 +18,7 @@ SECRET_KEY = 'django-insecure-coeh_sa%sdk4jpcj!(40=y=9#mxai9ok$(ozph1!4&)5)8p(bg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['pytube-backend.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['pytube-backend.herokuapp.com', '127.0.0.1']
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 ]
 
 FFMPEG_PATH = ""
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "corsheaders.middleware.CorsMiddleware",
@@ -79,17 +80,22 @@ WSGI_APPLICATION = 'API_Django.wsgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [("localhost", 6379)],
-        },
-        'ROUTING': 'routing.application',
-
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
     },
 }
 
 ASGI_APPLICATION = 'API_Django.asgi.application'
 
+# Redis
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
